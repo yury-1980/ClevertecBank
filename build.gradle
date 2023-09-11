@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+//    id "io.freefair.lombok" version "8.3"
+    id 'org.liquibase.gradle' version '2.2.0'
+    id 'war'
+//    id 'io.freefair.aspectj.post-compile-weaving' version '5.3.0'
+//    id 'io.freefair.aspectj.post-compile-weaving' version '8.3'
+}
+
+group = 'ru.clevertec'
+version = '1.0-SNAPSHOT'
+java.sourceCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+//    implementation 'org.apache.logging.log4j:log4j-api:2.17.1'
+//    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+
+    implementation 'ch.qos.logback:logback-classic:1.4.11'
+    implementation 'org.postgresql:postgresql:42.3.8'
+    implementation 'org.yaml:snakeyaml:2.0'
+
+    liquibaseRuntime 'info.picocli:picocli:4.6.3'
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.23.1'
+//    liquibaseRuntime 'org.liquibase:liquibase-maven-plugin:4.23.1'
+    liquibaseRuntime 'org.postgresql:postgresql:42.3.8'
+
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.apache.commons:commons-dbcp2:2.9.0'
+//    implementation 'org.apache.commons:commons-pool2:2.11.1'
+
+
+//    liquibaseRuntime sourceSets.main.output
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'javax:javaee-web-api:8.0'
+    implementation 'javax:javaee-api:8.0'
+//    implementation 'javax:javaee-api:7.0'
+    /*implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.50'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-logging-juli:9.0.50'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.50'
+    implementation 'org.apache.tomcat:tomcat-servlet-api:9.0.50'
+    implementation(group: 'com.aspose', name: 'aspose-words', version: '22.7', classifier: 'jdk16')*/
+
+
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+liquibase {
+    activities {
+        main {
+            changelogFile 'src/main/resources/db/changelog/master.yaml' // Путь к файлу changelog
+            url 'jdbc:postgresql://localhost:5432/Bank' // URL вашей базы данных
+            username 'postgres' // Имя пользователя базы данных
+            password 'postgres' // Пароль пользователя базы данных
+        }
+
+        runList = "main"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
