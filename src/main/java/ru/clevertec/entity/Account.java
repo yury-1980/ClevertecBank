@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @Data
@@ -11,9 +12,10 @@ import java.math.BigInteger;
 @NoArgsConstructor
 public class Account {
 
-    private BigInteger id;
-    private BigInteger account;
-    private BigInteger clientId;
-    private Integer balance;
+    private long id;
+    private long account;
+    private long clientId;
+    private long bankId;
+    private BigDecimal balance;
 
 }

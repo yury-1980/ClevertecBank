@@ -14,4 +14,6 @@ public class RequestsSQL {
             "WHERE account.account = ?";
     public static final String UPDATE_BALANCE = "UPDATE public.account\n" +
             "SET balance = ? WHERE id = ?";
+    public static final String GET_ACCOUNT_ALL = "SELECT  id, balance\n" +
+            "FROM account WHERE id > ?;";
 }

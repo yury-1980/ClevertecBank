@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class Bank {
 
-    private BigInteger id;
+    private long id;
     private String bankName;
 
     private ArrayList<Client> clients = new ArrayList<>();

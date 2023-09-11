@@ -7,7 +7,6 @@ services:
   db:
     image: postgres:14
     container_name: bank_db
-#    restart: always
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: Bank

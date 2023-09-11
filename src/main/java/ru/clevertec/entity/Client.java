@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @NoArgsConstructor
 public class Client {
 
-    private BigInteger id;
+    private long id;
     private String clientName;
 
     private ArrayList<Account> accounts = new ArrayList<>();

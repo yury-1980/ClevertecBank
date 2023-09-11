@@ -2,7 +2,9 @@ package ru.clevertec.controller.servlets;
 
 import com.google.gson.Gson;
 import ru.clevertec.repository.impl.ClientRepositoryImpl;
+import ru.clevertec.service.ExaminationService;
 import ru.clevertec.service.impl.ClientServiceImpl;
+import ru.clevertec.service.impl.ExaminationServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +29,8 @@ public class ClientServlet extends HttpServlet {
 
     // информация о клиенте
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
 
         ClientServiceImpl clientService = new ClientServiceImpl(new ClientRepositoryImpl());
 
