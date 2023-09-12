@@ -1,10 +1,8 @@
 package ru.clevertec.controller.servlets;
 
 import com.google.gson.Gson;
-import ru.clevertec.repository.impl.ClientRepositoryImpl;
-import ru.clevertec.service.ExaminationService;
-import ru.clevertec.service.impl.ClientServiceImpl;
-import ru.clevertec.service.impl.ExaminationServiceImpl;
+import ru.clevertec.repository.impl.AccountRepositoryImpl;
+import ru.clevertec.service.impl.AccountServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,21 +29,18 @@ public class ClientServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 
-
-        ClientServiceImpl clientService = new ClientServiceImpl(new ClientRepositoryImpl());
+        AccountServiceImpl accountService = new AccountServiceImpl(new AccountRepositoryImpl());
 
         final int CREATED = 201;
         String name = req.getParameter(NAME);
 
-        String[] json = new Gson().toJson(clientService.getClientName(name)).split(",");
+        String json = new Gson().toJson(accountService.getAccountAll(name));
 
         try (PrintWriter writer = resp.getWriter()) {
             writer.println(QUERY_RESULT_NAME + name);
+            writer.println();
+            writer.write(json);
 
-            for (String s : json) {
-                writer.println();
-                writer.write(s);
-            }
             resp.setStatus(CREATED);
         }
     }
@@ -54,7 +49,7 @@ public class ClientServlet extends HttpServlet {
     // операции пополнения и снятия
     public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        ClientServiceImpl clientService = new ClientServiceImpl(new ClientRepositoryImpl());
+        AccountServiceImpl clientService = new AccountServiceImpl(new AccountRepositoryImpl());
 
         String json = null;
         final int CREATED = 201;

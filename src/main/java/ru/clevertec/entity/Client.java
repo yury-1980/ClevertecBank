@@ -14,6 +14,5 @@ public class Client {
 
     private long id;
     private String clientName;
-
     private ArrayList<Account> accounts = new ArrayList<>();
 }

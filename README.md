@@ -23,22 +23,45 @@ Query result name: Vasya
 2. Для пополнения счёта клиента выберите Put запрос с параметром znak=plus.
 Пример: http://localhost:8080/v1?znak=plus&account=1&sum=7
 Ответ:
-   Query result account: 1
-
-"accountId-1 account-1 balance-862"
+   {
+   "id": 1,
+   "account": 1,
+   "clientId": 1,
+   "bankId": 1,
+   "balance": 669
+   }
 
 3. Для снятия со счёта клиента выберите Put запросс параметром znak=minus.
 Пример: http://localhost:8080/v1?znak=minus&account=1&sum=7
 Ответ:
-   Query result account: 1
-
-"accountId-1 account-1 balance-855"
+   {
+   "id": 1,
+   "account": 1,
+   "clientId": 1,
+   "bankId": 1,
+   "balance": 662
+   }
 
 4. Для перевода средств выберите Put запрос аклаунт 1, аккаунт 2 и сумму (первому перевод от второга).
 Пример: http://localhost:8080/v1/perevod?account1=1&account2=2&sum=10
 Ответ:
-   Query result:1
+   Query result: 1
+   Query result: 2
 
 
-"accountId-1 account-1 balance-865
-accountId-2 account-2 balance-493"
+[
+{
+"id": 1,
+"account": 1,
+"clientId": 1,
+"bankId": 1,
+"balance": 692
+},
+{
+"id": 2,
+"account": 2,
+"clientId": 1,
+"bankId": 2,
+"balance": 690
+}
+]
