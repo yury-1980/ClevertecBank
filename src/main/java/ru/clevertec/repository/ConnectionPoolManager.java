@@ -22,12 +22,11 @@ public class ConnectionPoolManager {
         Yaml yaml = new Yaml();
         InputStream inputStream = ConnectionPoolManager.class.getClassLoader()
                 .getResourceAsStream(CONFIG_DB);
-        Map<String, String> str = yaml.load(inputStream);
 
-        return str;
+        return yaml.load(inputStream);
     }
 
-    private static Map<String, String> stringMap = readConfigDBYaml();
+    private static final Map<String, String> stringMap = readConfigDBYaml();
 
     static {
         dataSource = new BasicDataSource();
@@ -35,8 +34,6 @@ public class ConnectionPoolManager {
         dataSource.setUsername(stringMap.get(USER_NAME));
         dataSource.setPassword(stringMap.get(PASSWORD));
         dataSource.setDriverClassName(stringMap.get(DRIVER));
-//        dataSource.setMaxTotal(Integer.parseInt(stringMap.get("maxTotalConnections")));
-//        dataSource.setMaxIdle(Integer.parseInt(stringMap.get("maxIdleConnections")));
         dataSource.setDefaultAutoCommit(false);
     }
 

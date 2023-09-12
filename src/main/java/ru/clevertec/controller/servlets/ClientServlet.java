@@ -2,9 +2,9 @@ package ru.clevertec.controller.servlets;
 
 import com.google.gson.Gson;
 import ru.clevertec.repository.impl.AccountRepositoryImpl;
+import ru.clevertec.service.ExaminationService;
 import ru.clevertec.service.impl.AccountServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +25,13 @@ public class ClientServlet extends HttpServlet {
     private static final String QUERY_RESULT_ACCOUNT = "Query result account: ";
     private static final String QUERY_RESULT_NAME = "Query result name: ";
 
-    // информация о клиенте
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    /**
+   * информация о клиенте
+     */
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         AccountServiceImpl accountService = new AccountServiceImpl(new AccountRepositoryImpl());
+        ExaminationService.checksBalance();
 
         final int CREATED = 201;
         String name = req.getParameter(NAME);
@@ -46,12 +48,15 @@ public class ClientServlet extends HttpServlet {
     }
 
     @Override
-    // операции пополнения и снятия
-    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+     /*
+     * операции пополнения и снятия
+     */
+    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         AccountServiceImpl clientService = new AccountServiceImpl(new AccountRepositoryImpl());
+        ExaminationService.checksBalance();
 
-        String json = null;
+        String json;
         final int CREATED = 201;
         String znak = req.getParameter(ZNAK);
         long account = Long.parseLong(req.getParameter(ACCOUNT));

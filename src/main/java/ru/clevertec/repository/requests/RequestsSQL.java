@@ -9,9 +9,15 @@ public class RequestsSQL {
             "left outer join public.bank b on b.id = a.bank_id " +
             "WHERE client_name = ?";
 
-    public static final String GET_ACCOUNT = "SELECT id, account, client_id, bank_id, balance\n" +
-            "FROM account\n" +
-            "WHERE account.account = ?";
+    public static final String GET_ACCOUNT = """
+            SELECT id, account, client_id, bank_id, balance
+            FROM account
+            WHERE account.account = ?""";
     public static final String UPDATE_BALANCE = "UPDATE public.account\n" +
             "SET balance = ? WHERE id = ?";
+
+    public static final String GET_ID_BALANCE_ALL_ACCOUNT = """
+            SELECT  id, balance
+            FROM account
+            WHERE id > ?""";
 }

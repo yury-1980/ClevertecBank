@@ -11,7 +11,7 @@ public interface AccountRepository {
 
     Account getAccount(long accountNum);
 
-    Account updateAccount(long idAccount, BigDecimal balance);
+    void updateAccount(long idAccount, BigDecimal balance);
 
     void movingToAnotherClient(BigDecimal newBalance1, long idAccount1, BigDecimal newBalance2,
                                              long idAccount2);

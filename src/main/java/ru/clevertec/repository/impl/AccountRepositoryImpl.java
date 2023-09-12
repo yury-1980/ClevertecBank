@@ -21,7 +21,7 @@ public class AccountRepositoryImpl implements AccountRepository {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         ArrayList<Account> accountList = new ArrayList<>();
-        Account accountClient = null;
+        Account accountClient;
 
         try {
             connection = ConnectionPoolManager.getConnection();
@@ -84,11 +84,10 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     @Override
-    public Account updateAccount(long idAccount, BigDecimal balance) {
+    public void updateAccount(long idAccount, BigDecimal balance) {
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = ConnectionPoolManager.getConnection();
@@ -100,12 +99,20 @@ public class AccountRepositoryImpl implements AccountRepository {
 
         } catch (SQLException e) {
             System.out.println("Connection not found.");
-//            e.printStackTrace();
         } finally {
-            closes(resultSet, connection, preparedStatement);
+            try {
+
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    ConnectionPoolManager.releaseConnection(connection);
+                }
+            } catch (SQLException e) {
+                System.out.println("Not successful!");
+            }
         }
 
-        return null;
     }
 
     @Override
@@ -113,7 +120,6 @@ public class AccountRepositoryImpl implements AccountRepository {
                                       long idAccount2) {
 
         Connection connection = null;
-        ResultSet resultSet = null;
 
         try {
             connection = ConnectionPoolManager.getConnection();
@@ -141,11 +147,8 @@ public class AccountRepositoryImpl implements AccountRepository {
                 throw new RuntimeException(ex);
             }
         } finally {
-            try {
 
-                if (resultSet != null) {
-                    resultSet.close();
-                }
+            try {
 
                 if (connection != null) {
                     ConnectionPoolManager.releaseConnection(connection);
@@ -157,6 +160,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     }
 
     private void closes(ResultSet resultSet, Connection connection, PreparedStatement preparedStatement) {
+
         try {
             if (resultSet != null) {
                 resultSet.close();
