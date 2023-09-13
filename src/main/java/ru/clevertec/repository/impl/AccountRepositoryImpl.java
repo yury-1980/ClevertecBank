@@ -1,5 +1,6 @@
 package ru.clevertec.repository.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.clevertec.entity.Account;
 import ru.clevertec.repository.AccountRepository;
 import ru.clevertec.repository.ConnectionPoolManager;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+@Slf4j
 public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
@@ -42,7 +44,7 @@ public class AccountRepositoryImpl implements AccountRepository {
             }
 
         } catch (SQLException e) {
-            System.out.println("Connection not found.");
+            log.info("Connection not found.");
         } finally {
             closes(resultSet, connection, preparedStatement);
         }
@@ -75,7 +77,7 @@ public class AccountRepositoryImpl implements AccountRepository {
             accountClient = new Account(accountId, account, clientId, bankId, balance);
 
         } catch (SQLException e) {
-            System.out.println("Connection not found.");
+            log.info("Connection not found.");
         } finally {
             closes(resultSet, connection, preparedStatement);
         }
@@ -98,7 +100,7 @@ public class AccountRepositoryImpl implements AccountRepository {
             connection.commit();
 
         } catch (SQLException e) {
-            System.out.println("Connection not found.");
+            log.info("Connection not found.");
         } finally {
             try {
 
@@ -109,7 +111,7 @@ public class AccountRepositoryImpl implements AccountRepository {
                     ConnectionPoolManager.releaseConnection(connection);
                 }
             } catch (SQLException e) {
-                System.out.println("Not successful!");
+                log.info("Not successful!");
             }
         }
 
@@ -138,7 +140,7 @@ public class AccountRepositoryImpl implements AccountRepository {
                 connection.commit();
             }
         } catch (SQLException e) {
-            System.out.println("Connection not found.");
+            log.info("Connection not found.");
 
             try {
                 assert connection != null;
@@ -154,7 +156,7 @@ public class AccountRepositoryImpl implements AccountRepository {
                     ConnectionPoolManager.releaseConnection(connection);
                 }
             } catch (SQLException e) {
-                System.out.println("Not successful!");
+                log.info("Not successful!");
             }
         }
     }

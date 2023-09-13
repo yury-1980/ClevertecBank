@@ -1,5 +1,6 @@
 package ru.clevertec.repository.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.clevertec.repository.ConnectionPoolManager;
 import ru.clevertec.repository.ExaminationRepository;
 import ru.clevertec.repository.requests.RequestsSQL;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class ExaminationRepositoryImpl implements ExaminationRepository {
 
     private static final int NOL = 0;
@@ -48,7 +50,7 @@ public class ExaminationRepositoryImpl implements ExaminationRepository {
                     ConnectionPoolManager.releaseConnection(connection);
                 }
             } catch (SQLException e) {
-                System.out.println("Not successful!");
+                log.info("Not successful!");
             }
         }
 
@@ -80,7 +82,7 @@ public class ExaminationRepositoryImpl implements ExaminationRepository {
                     ConnectionPoolManager.releaseConnection(connection);
                 }
             } catch (SQLException e) {
-                System.out.println("Not successful!");
+                log.info("Not successful!");
             }
         }
     }
