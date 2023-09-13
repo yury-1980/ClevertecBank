@@ -1,0 +1,2 @@
+Wed Sep 13 21:12:32 MSK 2023 Method 'replenishingBalance' called with arguments [1, 7]
+Wed Sep 13 21:12:32 MSK 2023 Method 'replenishingBalance' returned result: Account(id=1, account=1, clientId=1, bankId=1, balance=794)
