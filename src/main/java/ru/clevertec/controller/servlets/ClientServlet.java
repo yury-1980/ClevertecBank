@@ -2,9 +2,11 @@ package ru.clevertec.controller.servlets;
 
 import com.google.gson.Gson;
 import ru.clevertec.repository.impl.AccountRepositoryImpl;
-import ru.clevertec.service.ExaminationService;
+import ru.clevertec.repository.impl.ExaminationRepositoryImpl;
+import ru.clevertec.service.impl.ExaminationServiceImpl;
 import ru.clevertec.service.impl.AccountServiceImpl;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,28 @@ import java.math.BigDecimal;
 @WebServlet("/v1")
 public class ClientServlet extends HttpServlet {
 
+    AccountServiceImpl accountService;
+    ExaminationServiceImpl examinationServiceImpl;
+
+    @Override
+    public void init() {
+
+        try {
+
+            accountService = new AccountServiceImpl(new AccountRepositoryImpl());
+            getServletContext().setAttribute("accountService", accountService);
+            new ExaminationServiceImpl(new ExaminationRepositoryImpl()).checksBalance();
+            getServletContext().setAttribute("examinationService", examinationServiceImpl);
+
+        } catch (Exception e) {
+            try {
+                throw new ServletException("Error initializing servlet !", e);
+            } catch (ServletException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
     private static final String NAME = "name";
     private static final String ACCOUNT = "account";
     private static final String SUM = "sum";
@@ -25,17 +49,9 @@ public class ClientServlet extends HttpServlet {
     private static final String QUERY_RESULT_ACCOUNT = "Query result account: ";
     private static final String QUERY_RESULT_NAME = "Query result name: ";
 
-    /**
-   * информация о клиенте
-     */
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
 
-        AccountServiceImpl accountService = new AccountServiceImpl(new AccountRepositoryImpl());
-        ExaminationService.checksBalance();
-
-        final int CREATED = 201;
         String name = req.getParameter(NAME);
-
         String json = new Gson().toJson(accountService.getAccountAll(name));
 
         try (PrintWriter writer = resp.getWriter()) {
@@ -43,21 +59,17 @@ public class ClientServlet extends HttpServlet {
             writer.println();
             writer.write(json);
 
-            resp.setStatus(CREATED);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-     /*
-     * операции пополнения и снятия
-     */
-    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        AccountServiceImpl clientService = new AccountServiceImpl(new AccountRepositoryImpl());
-        ExaminationService.checksBalance();
+    public void doPut(HttpServletRequest req, HttpServletResponse resp) {
 
         String json;
-        final int CREATED = 201;
         String znak = req.getParameter(ZNAK);
         long account = Long.parseLong(req.getParameter(ACCOUNT));
         BigDecimal sum = new BigDecimal(req.getParameter(SUM));
@@ -65,11 +77,11 @@ public class ClientServlet extends HttpServlet {
         json = new Gson().toJson("Invalid operation !");
 
         if (znak.equals(PLUS)) {
-            json = new Gson().toJson(clientService.replenishingBalance(account, sum));
+            json = new Gson().toJson(accountService.replenishingBalance(account, sum));
         }
 
         if (znak.equals(MINUS)) {
-            json = new Gson().toJson(clientService.decreasingBalance(account, sum));
+            json = new Gson().toJson(accountService.decreasingBalance(account, sum));
         }
 
         try (PrintWriter writer = resp.getWriter()) {
@@ -77,7 +89,9 @@ public class ClientServlet extends HttpServlet {
             writer.println();
             writer.write(json);
 
-            resp.setStatus(CREATED);
+            resp.setStatus(HttpServletResponse.SC_OK);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
