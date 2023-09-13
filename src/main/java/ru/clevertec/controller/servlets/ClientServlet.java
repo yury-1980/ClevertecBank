@@ -3,10 +3,9 @@ package ru.clevertec.controller.servlets;
 import com.google.gson.Gson;
 import ru.clevertec.repository.impl.AccountRepositoryImpl;
 import ru.clevertec.repository.impl.ExaminationRepositoryImpl;
-import ru.clevertec.service.impl.ExaminationServiceImpl;
 import ru.clevertec.service.impl.AccountServiceImpl;
+import ru.clevertec.service.impl.ExaminationServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,20 +23,11 @@ public class ClientServlet extends HttpServlet {
     @Override
     public void init() {
 
-        try {
-
             accountService = new AccountServiceImpl(new AccountRepositoryImpl());
             getServletContext().setAttribute("accountService", accountService);
             new ExaminationServiceImpl(new ExaminationRepositoryImpl()).checksBalance();
             getServletContext().setAttribute("examinationService", examinationServiceImpl);
 
-        } catch (Exception e) {
-            try {
-                throw new ServletException("Error initializing servlet !", e);
-            } catch (ServletException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
     }
 
     private static final String NAME = "name";
